@@ -57,7 +57,7 @@ async function attemptToGetMexicanVisa(page) {
     await page.click("#aceptar");
   } catch (error) {
     console.error(error);
-    cosnole.log("Something went wrong. Retrying...");
+    console.log("Something went wrong. Retrying...");
     attemptToGetMexicanVisa(page);
   }
 }
