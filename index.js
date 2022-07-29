@@ -67,16 +67,22 @@ async function main() {
   const [page] = await browser.pages();
 
   page.on("response", async response => {
-    const matches = /.*\/captcha\/show.*\.jpg/.exec(response.url());
-    if (!matches) return;
-    const [configName] = process.argv[2].split(".config.js");
-    console.log(`Found captcha image! Saving to ${configName}-captcha.jpg`);
-    const captchaBuffer = await response.buffer();
-    fs.writeFile(
-      `${configName}-captcha.jpg`,
-      captchaBuffer,
-      () => (fillCaptchaPromise = fillCaptcha(page))
-    );
+    try {
+      const matches = /.*\/captcha\/show.*\.jpg/.exec(response.url());
+      if (!matches) return;
+      const [configName] = process.argv[2].split(".config.js");
+      console.log(`Found captcha image! Saving to ${configName}-captcha.jpg`);
+      const captchaBuffer = await response.buffer();
+      fs.writeFile(
+        `${configName}-captcha.jpg`,
+        captchaBuffer,
+        () => (fillCaptchaPromise = fillCaptcha(page))
+      );
+    } catch (error) {
+      console.error(error);
+      cosnole.log("Something went wrong fetching captcha image. Retrying...");
+      attemptToGetMexicanVisa(page);
+    }
   });
 
   page.on("response", async response => {
