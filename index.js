@@ -80,7 +80,7 @@ async function main() {
       );
     } catch (error) {
       console.error(error);
-      cosnole.log("Something went wrong fetching captcha image. Retrying...");
+      console.log("Something went wrong fetching captcha image. Retrying...");
       attemptToGetMexicanVisa(page);
     }
   });
